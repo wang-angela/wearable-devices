@@ -16,7 +16,6 @@ def read_data(filename, sheetname, drop):
         df.drop(df.columns[0], axis=1, inplace=True)
 
     display(df)
-
     return df
 
 
@@ -36,6 +35,12 @@ if __name__ == '__main__':
     total_sleep_df = read_data('SP24_rawSleepUpdated.xlsx', 'TotalSleepRecords', True)
     consent_info_df = read_data('SP24_consentInfo.xlsx', 'Sheet1', False)
 
+    # Create first heatmap
+    create_heatmap(total_sleep_df, 'SP24_original')
+
     # Cleaning Data
     total_sleep_df = dc.withdrew_consent(total_sleep_df, consent_info_df)
+    total_sleep_df = dc.threshold_drop(total_sleep_df, 40)
 
+    # Create second heatmap
+    create_heatmap(total_sleep_df, 'SP24_postClean')
